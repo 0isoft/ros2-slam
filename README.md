@@ -37,7 +37,7 @@ if __name__=="__main__":
 ```
  here: octavian@octavian-VMware20-1:~/ros2_ws/robot-stack/src/robot_control/robot_control$ nano test.py.
  
- ive also changed setup.py to include entry point=main function that ive written:
+ ive also changed setup.py to include entry point=main function that ive written, in **setup.py**
 ```
 ...
     install_requires=['setuptools'],
@@ -58,6 +58,26 @@ if __name__=="__main__":
 ```
 
 this was my hello world script.
+
+this references rclpy=ROS Client Library for Python = make ROS aware of the python script ("build ros graph")
+
+this is then 'compiled' with colcon (python code is not compiled, but the workspace containing the python scripts is assembled by colcon)
+
+```bash
+
+octavian@octavian-VMware20-1:~/ros2_ws/robot-stack$ colcon build --symlink-install
+Starting >>> robot_control
+Finished <<< robot_control [1.24s]          
+
+Summary: 1 package finished [1.43s]
+
+```
+
+symlink = use symbolic links (pointers) s.t. you don't have to rebuild everything when making changes to existing python files
+(note: this wont work with cpp files, those need to actually be re-compiled).
+colcon produces a binary executable
+
+
 
 
 
