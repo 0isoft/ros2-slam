@@ -78,7 +78,7 @@ symlink = use symbolic links (pointers) s.t. you don't have to rebuild everythin
 colcon produces a binary executable
 
 
-## 21.08.2026
+## 21.08.2026 - creating publishers and subscribers
 
 spin = keep node alive
 
@@ -98,6 +98,65 @@ and add
 ```bash
 source /home/octavian/ros2_ws/install/setup.bash
 ```
+
+### creating a publisher
+a new script was created,
+```py
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String 
+
+#why import it from there? isnt it a default data type? 
+#because this "String" is specific to ROS schema for messages
+#a plain python string doesnt carry the ROS message metadata by itself
+
+class TestPublisher(Node):
+    def __init__(self):
+        super().__init__("test_publisher") #this can't be empty
+        #test_publusher is the ROS node name!!
+        
+        self.publisher=self.create_publisher(String,"/hello_world",10)
+        #"10"=relates to a queue depth for the messages
+        #(up to 10 messages will be buffered somewhere)
+
+        #create_publisher() is inhereted from Node, and returns a
+        #publisher object, which we then attach to TestPublisher
+
+
+        self.timer=self.create_timer(1.0, self.publish_message)
+        #this is kind of a callback, every 1s schedule publish_message 
+
+    def publish_message(self):
+            msg=String()
+            msg.data="hello from test publisher node"
+            self.publisher.publish(msg) 
+            
+            #self.get_logger().info("published", msg.data)
+            #this sort of logging doesn't work,
+            #it's not like Python's print()
+
+            #we have to use
+            self.get_logger().info(f"published:{msg.data}")
+            #instead
+
+def main():
+    #before we can create ROS nodes, we need rclpy.init()
+    rclpy.init()
+
+    node=TestPublisher()#instance of our publisher node
+    rclpy.spin(node)
+
+if __name__=="__main__":
+    main()
+```
+
+what this does, is that it instantiates a TestPublisher instance. what is a TestPublisher instance? is just a Node,
+called "test_publisher" by ROS, to which we set the attribute 'publisher' as the object returned when we call .create_publisher() method (which is a method all Nodes have).
+at this time, we also defined this publisher as writing to a topic called "hello world", and up to 10 messages from this publisher
+can be buffered on it. 
+can the "10" stack depth argument be avoided? apparently not.
+
+the test_publisher node will use a timer such that every 1s it calls publish_message, which publishes a ROS String message and then logs that op.
 
 
 
