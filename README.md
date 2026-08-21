@@ -159,6 +159,62 @@ can the "10" stack depth argument be avoided? apparently not.
 the test_publisher node will use a timer such that every 1s it calls publish_message, which publishes a ROS String message and then logs that op.
 
 
+one can see the activity on a topic with
+```bash
+ros2 topic info /name_of_topic
+```
+(will show publisher count and subscriber count)
+
+
+here, I also added the subscriber, for completeness
+```py
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String 
+
+
+class TestSubscriber(Node):
+    def __init__(self):
+        super().__init__("test_subscriber") #this can't be empty
+        #test_publusher is the ROS node name!!
+        
+        self.subscriber=self.create_subscription(String,"/hello_world", self.listen_to_message,10)
+        #subscriber listens to the same topic as the publisher (hello_world).
+        
+        #but according to documentation, we need to specify the callback function instead
+        #so it seems that when a message is received, it triggers an event that leads to "listen_to_message"
+        #being called
+        #instead of using a timer to catch messages received within x seconds or sth
+
+
+        #self.timer=self.create_timer(1.0, self.listen_to_message) 
+
+    def listen_to_message(self,msg):
+            #msg=String() #no longer needed
+            
+            #received_msg=self.subscriber.get(msg) #? how will the message get here?
+
+            # msg is passed as argument to the callback function!!
+            # ROS handles passing it from the topic, to the listener, through a "ros executor"
+            # ROS invokes the callbacks whenever events occur, and it also prepares the payloads and injects them
+        
+            self.get_logger().info(f"published:{msg}")
+
+def main():
+    #before we can create ROS nodes, we need rclpy.init()
+    rclpy.init()
+
+    node=TestSubscriber()#instance of our publisher node
+    rclpy.spin(node)
+
+if __name__=="__main__":
+    main()
+```
+
+<img width="877" height="647" alt="Capture d’écran 2026-08-21 à 21 43 05" src="https://github.com/user-attachments/assets/5ec2c5f5-1173-46f1-928e-cbf674bd56d6" />
+
+
+<img width="1277" height="717" alt="Capture d’écran 2026-08-21 à 21 42 49" src="https://github.com/user-attachments/assets/4b5a2516-e5b5-45c3-af31-6c782f8f8342" />
 
 
 
