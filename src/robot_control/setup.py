@@ -23,6 +23,8 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': 'test_node_executable=robot_control.test:main',
+        'console_scripts': [
+		'test_node_executable=robot_control.test:main',
+		'publisher_test=robot_control.publisher_test:main',]
     },
 )

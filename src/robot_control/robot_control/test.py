@@ -12,7 +12,7 @@ def main(args=None):
     
     rclpy.spin(node)
 
-    node.destroy_node()#clean up node: without it, spin would keep the node alive indefinitely
+    node.destroy_node()#clean up node: but "spin" makes it such that this part of the code never runs
     rclpy.shutdown()#shut down ROS client library context
 
 #to execute file as script:
