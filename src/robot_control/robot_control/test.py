@@ -6,9 +6,13 @@ def main(args=None):
     
     #new node
     node=Node('some_node_name')
+    
+    
     node.get_logger().info("hello world")
     
-    node.destroy_node()#clean up node
+    rclpy.spin(node)
+
+    node.destroy_node()#clean up node: without it, spin would keep the node alive indefinitely
     rclpy.shutdown()#shut down ROS client library context
 
 #to execute file as script:
