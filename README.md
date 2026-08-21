@@ -13,7 +13,7 @@ so basically a ros topic is like a kafka topic, except you don't get the replays
 
 node has a responsibility and is executing code. topic is the communication channel. message is the actual content transmitted between nodes (in a given format, but think of it like a struct)
 
-also worth noting that there is a master node which is the 'orchestrator'
+also worth noting that there was a master node which was the 'orchestrator' in ros1, but ros2 is decentralized
 
 nodes can publish or subscribe to a topic.
 
@@ -76,6 +76,29 @@ Summary: 1 package finished [1.43s]
 symlink = use symbolic links (pointers) s.t. you don't have to rebuild everything when making changes to existing python files
 (note: this wont work with cpp files, those need to actually be re-compiled).
 colcon produces a binary executable
+
+
+## 21.08.2026
+
+spin = keep node alive
+
+every time you open a new terminal to run ros2, you need to run
+```bash
+source install/setup.bash
+```
+
+but this can be avoided if you you add it "to bashrc"
+
+```bash
+nano ~/.bashrc
+```
+
+and add
+
+```bash
+source /home/octavian/ros2_ws/install/setup.bash
+```
+
 
 
 
