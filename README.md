@@ -216,6 +216,21 @@ if __name__=="__main__":
 
 <img width="1277" height="717" alt="Capture d’écran 2026-08-21 à 21 42 49" src="https://github.com/user-attachments/assets/4b5a2516-e5b5-45c3-af31-6c782f8f8342" />
 
+## 22.08.2026 - ros2 services and actions
+topics-stream of data continuously published/subscribed
+services-no stream of data. but a server and client relationship (like REST API).
+
+topics are one-to-many and make sense whenever there's a continuous action (like camera frames / sensor data)
+services are there for whenever we want to make individual calls to a node. example: reset map, get a config.
+
+we also have "actions", which is like a service, but after the call to the server node is done,
+the server keeps a continuous stream of updates going back to the client (time during which the client can make other requests like 'cancel'), good for whenever something can take a longer time to complete (example: move arm, navigate to point)
+
+in all cases, it's event driven in the sense that there is this "executor" which acknowledges that packets have arrived, then dispatches that message and injects the data into the callback methods. this is handled by ros middleware first, then by rclpy/rclcpp
+
+(TODO) provide examples of service/action scripts
+
+
 
 
 
