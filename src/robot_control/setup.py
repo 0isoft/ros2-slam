@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
 		'test_node_executable=robot_control.test:main',
 		'publisher_test=robot_control.publisher_test:main',
-        'subscriber_test=robot_control.subscriber_test:main']
+        'subscriber_test=robot_control.subscriber_test:main',
+        'addition_server=robot_control.server_test:main'],
     },
 )
